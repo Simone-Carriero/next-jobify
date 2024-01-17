@@ -4,7 +4,7 @@ import LinksDropdown from './LinksDropdown';
 
 const Navbar = () => {
   return (
-    <nav className='bg-muted py-4 sm:px-16 lg:px-24 px-4 flex items-center justify-between text-primary'>
+    <nav className='bg-muted py-4 sm:px-16 lg:px-24 px-4 flex items-center justify-between text-muted-foreground'>
       <div>
         <LinksDropdown />
       </div>
