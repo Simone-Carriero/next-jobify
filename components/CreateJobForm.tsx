@@ -3,11 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -20,6 +16,9 @@ import {
 } from '@/utils/types';
 import { CustomFormField } from './FormComponents';
 import CustomFormSelect from './FormComponents';
+import { createJobAction } from '@/utils/actions';
+import { toast } from './ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 const CreateJobForm = () => {
   // 1. Define your form.
@@ -34,11 +33,29 @@ const CreateJobForm = () => {
     },
   });
 
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (values: CreateAndEditJobType) => createJobAction(values),
+    onSuccess: (data) => {
+      if (!data) {
+        toast({ description: 'there was an error' });
+        return;
+      }
+      toast({ description: 'job created' });
+      queryClient.invalidateQueries({ queryKey: ['jobs'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
+      queryClient.invalidateQueries({ queryKey: ['charts'] });
+      // form.reset()
+      router.push('/jobs');
+    },
+  });
+
   // 2. Define a submit handler.
   function onSubmit(values: CreateAndEditJobType) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    mutate(values);
   }
 
   return (
@@ -76,7 +93,11 @@ const CreateJobForm = () => {
           <Button
             className='self-end capitalize'
             type='submit'>
-            Submit
+            {isPending ? (
+              <span className='animate-spin h-5 w-5 border rounded-full border-t-foreground'></span>
+            ) : (
+              'create job'
+            )}
           </Button>
         </div>
       </form>
