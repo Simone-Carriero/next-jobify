@@ -13,19 +13,10 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import JobInfo from './JobInfo';
+import DeleteJobBtn from './DeleteJobBtn';
 
 const JobCard = ({ job }: { job: JobType }) => {
-  const {
-    clerkId,
-    company,
-
-    location,
-    mode,
-    position,
-    status,
-
-    id,
-  } = job;
+  const { company, location, mode, position, status, id } = job;
   const date = new Date(job.createdAt).toLocaleDateString();
   return (
     <Card className='bg-muted'>
@@ -62,7 +53,7 @@ const JobCard = ({ job }: { job: JobType }) => {
             edit
           </Button>
         </Link>
-        <Button>delete</Button>
+        <DeleteJobBtn id={id} />
       </CardFooter>
     </Card>
   );
