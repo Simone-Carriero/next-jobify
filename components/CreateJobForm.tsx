@@ -55,6 +55,7 @@ const CreateJobForm = () => {
 
   // 2. Define a submit handler.
   function onSubmit(values: CreateAndEditJobType) {
+    console.log(values);
     mutate(values);
   }
 
