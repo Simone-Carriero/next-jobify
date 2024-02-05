@@ -79,13 +79,13 @@ const CreateJobForm = () => {
             control={form.control}
           />
           <CustomFormSelect
-            name='jobStatus'
+            name='status'
             labelText='job status'
             control={form.control}
             items={Object.values(JobStatus)}
           />
           <CustomFormSelect
-            name='jobMode'
+            name='mode'
             labelText='job mode'
             control={form.control}
             items={Object.values(JobMode)}
